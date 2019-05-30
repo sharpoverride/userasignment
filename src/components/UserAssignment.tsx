@@ -3,24 +3,18 @@ import Select, { components } from "react-select";
 import { Tabs } from "./Tabs";
 import { TabItem } from "./TabItem";
 import { MenuListComponentProps } from "react-select/lib/components/Menu";
-
-const selectStyles = {
-  option: (provided: any, _state: any) => ({
-    ...provided,
-    color: "#414141",
-    lineHeight: "36px",
-    textAlign: "left"
-  })
-};
+import { Avatar } from "./avatars";
 
 export class UserAssignment extends React.Component<Props> {
   public render() {
     const { options } = this.props;
     return (
       <Select
+        menuIsOpen
         isMulti
         options={options}
         components={{ MenuList: MenuList(this.props), Option }}
+        onChange={this.props.onChange}
         theme={theme => ({
           ...theme,
           borderRadius: 4,
@@ -42,17 +36,10 @@ export type Props = {
   options: any;
   tabs: Array<TabItemModel>;
   selectedTab?: string;
-  onChange?(): void;
+  onChange?(value: any, action: ActionMeta): void;
   onTabChange?(value: string): void;
 };
 
-export type TabItemModel = {
-  value: string;
-  label: string;
-  isDefault?: boolean;
-
-  onTabChange?(value: string): void;
-};
 const MenuList = (userAssignmentProps: Props) => (
   props: MenuListComponentProps<any>
 ) => {
@@ -83,5 +70,43 @@ const MenuList = (userAssignmentProps: Props) => (
 };
 
 const Option: React.FC = (props: any) => {
-  return <components.Option {...props} />;
+  console.log(props);
+
+  return (
+    <components.Option {...props}>
+      <Avatar displayName={props.label} /> {props.label}
+    </components.Option>
+  );
 };
+
+const selectStyles = {
+  option: (provided: any, _state: any) => ({
+    ...provided,
+    color: "#414141",
+    fontFamily: "Calibri",
+    fontSize: "14px",
+    lineHeight: "36px",
+    textAlign: "left"
+  })
+};
+
+export type TabItemModel = {
+  value: string;
+  label: string;
+  isDefault?: boolean;
+
+  onTabChange?(value: string): void;
+};
+
+export type ActionTypes =
+  | "select-option"
+  | "deselect-option"
+  | "remove-value"
+  | "pop-value"
+  | "set-value"
+  | "clear"
+  | "create-option";
+
+export interface ActionMeta {
+  action: ActionTypes;
+}

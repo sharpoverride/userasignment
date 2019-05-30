@@ -38,6 +38,9 @@ const App: React.FC = () => {
               console.log("tab change", tab);
               setState({ selectedTab: tab });
             }}
+            onChange={(value: any, action: any) => {
+              console.log("****", value, action);
+            }}
           />
         </SelectContainer>
       </main>
