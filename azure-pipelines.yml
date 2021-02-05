@@ -1,4 +1,7 @@
 # Node.js with React
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
 # Build a Node.js project that uses React.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
@@ -19,3 +22,9 @@ steps:
     npm install
     npm run build
   displayName: 'npm install and build'
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'select'
